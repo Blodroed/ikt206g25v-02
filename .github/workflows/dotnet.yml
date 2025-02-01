@@ -43,7 +43,5 @@ jobs:
           dotnet-version: 9.0.x
       - name: Restore dependencies
         run: dotnet restore
-      - name: Run All Tests
-        run: dotnet test --no-build --verbosity normal
-      - name: Run Specific Unit Tests (Release)
-        run: dotnet test ./StringLibraryTest/StringLibraryTest.csproj --no-build --configuration Release
+      - name: Run predefined Tests
+        run: dotnet test --no-build --logger "console;verbosity=detailed"
