@@ -10,10 +10,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-
+  setup:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
@@ -22,9 +20,19 @@ jobs:
         dotnet-version: 9.0.x
     - name: Restore dependencies
       run: dotnet restore
+      
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
     - name: Build
       run: dotnet build --no-restore
+  
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
     - name: Test
       run: dotnet test --no-build --verbosity normal
-    - name: Self Defined UnitTests
-      run: dotnet test StringLibraryTest/StringLibraryTest.csproj --configuration Release
+    - name: Self Defined UnitTests for release
+      run: dotnet test StringLibraryTest/StringLibraryTest.csproj --no-build --configuration Release
